@@ -1,11 +1,28 @@
 #!/bin/bash 
+#./downloadbitchute.sh https://www.bitchute.com/video/xJNBHF80zAI/
 
-echo "https://www.bitchute.com/video/xJNBHF80zAI/" > tmp.txt
+for param in "$@" 
+do
+    Test="${param}";
+done
+
+if [ "$Test" = '' ]
+then
+echo "No URL specified"
+exit
+else
+echo "${Test}"  > tmp.txt
+fi
+#gedit tmp.txt
+
+#echo "https://www.bitchute.com/video/xJNBHF80zAI/" > tmp.txt
 sed -i 's/https:\/\/www.bitchute.com\/video//g' tmp.txt
+sed -i 's/?list=subscriptions//g' tmp.txt
 sed -i 's/\///g' tmp.txt
 URL="https://www.bitchute.com/video/"
 VideoID=$(cat tmp.txt)
 URL="${URL}${VideoID}/"
+#exit
 rm tmp.txt
 
 #echo $URL
@@ -48,7 +65,7 @@ Channel=$(cat Channel.txt)
 Title=$(cat Title.txt)
 Description=$(cat Description.txt)
 #rm tmp.txt
-exit
+#exit
 rm videos.txt
 rm VidURL.txt
 rm index.html
