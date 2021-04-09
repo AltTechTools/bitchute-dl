@@ -1,7 +1,10 @@
 #!/bin/bash 
-#./downloadbitchute.sh https://www.bitchute.com/video/xJNBHF80zAI/
+#./downloadmany.sh https://www.bitchute.com/video/wP35rmT8MPX6/?list=subscriptions https://www.bitchute.com/video/nqRu9eOo3Gpd/?list=subscriptions
 
 for param in "$@" 
 do
     ./downloadbitchute.sh "${param}";
 done
+
+clear
+echo "Downloaded"

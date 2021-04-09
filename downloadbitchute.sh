@@ -65,7 +65,7 @@ Channel=$(cat Channel.txt)
 Title=$(cat Title.txt)
 Description=$(cat Description.txt)
 #rm tmp.txt
-exit
+#exit
 rm videos.txt
 rm VidURL.txt
 rm index.html

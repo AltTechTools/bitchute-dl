@@ -30,7 +30,7 @@ wget "https://www.bitchute.com/channel/${tmpName}/"
 ./dl_Chnl_ChannelID.sh
 ./dl_Chnl_DLImage.sh
 
-exit
+#exit
 rm index.html
 rm ChannelID.txt
 rm videos.txt
