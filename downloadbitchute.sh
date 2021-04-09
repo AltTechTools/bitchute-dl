@@ -1,6 +1,21 @@
 #!/bin/bash 
+#./downloadbitchute.sh https://www.bitchute.com/video/xJNBHF80zAI/
 
-echo "https://www.bitchute.com/video/xJNBHF80zAI/" > tmp.txt
+for param in "$@" 
+do
+    Test="${1}";
+done
+
+if [ "$Test" = '' ]
+then
+echo "No URL specified"
+exit
+else
+echo "${Test}"  > tmp.txt
+fi
+#gedit tmp.txt
+
+#echo "https://www.bitchute.com/video/xJNBHF80zAI/" > tmp.txt
 sed -i 's/https:\/\/www.bitchute.com\/video//g' tmp.txt
 sed -i 's/\///g' tmp.txt
 URL="https://www.bitchute.com/video/"
