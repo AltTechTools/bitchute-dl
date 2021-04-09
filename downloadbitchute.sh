@@ -3,7 +3,7 @@
 
 for param in "$@" 
 do
-    Test="${1}";
+    Test="${param}";
 done
 
 if [ "$Test" = '' ]
@@ -17,10 +17,12 @@ fi
 
 #echo "https://www.bitchute.com/video/xJNBHF80zAI/" > tmp.txt
 sed -i 's/https:\/\/www.bitchute.com\/video//g' tmp.txt
+sed -i 's/?list=subscriptions//g' tmp.txt
 sed -i 's/\///g' tmp.txt
 URL="https://www.bitchute.com/video/"
 VideoID=$(cat tmp.txt)
 URL="${URL}${VideoID}/"
+#exit
 rm tmp.txt
 
 #echo $URL
