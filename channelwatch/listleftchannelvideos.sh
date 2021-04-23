@@ -48,7 +48,7 @@ do
     "--output-file")
       OptionDownloadList="${paramArr[i+1]}"
     ;;
-    "-redownload")
+    "--redownload")
       OptionRedownload=1
     ;;
     "--keep")
