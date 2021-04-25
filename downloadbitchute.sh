@@ -24,14 +24,19 @@ do
       echo "Available Options:"
       echo "--keep: Keep Tmp Files and Skripts"
       echo "--novid: Skip Video Download"
+      echo "--wgetArgs: NExt passed String defines Args for wget [default: \"-q --show-progress\"]"
       echo "-h/--help: This Help"
       exit
     ;;
     "--keep")
       OptionKeep=1
-      echo "k param"
-      echo "${paramArr[i+1]}"
+      #echo "k param"
+      #echo "${paramArr[i+1]}"
    ;;
+   "--wgetArgs")
+     OptionWGetArgs="${paramArr[i+1]}"
+   ;;
+
    "--novid")
      OptionDLVid=0
    ;;
@@ -46,11 +51,11 @@ done
 
 Test=${paramArr[${#paramArr[@]}-1]}
 
-echo "Keep: $OptionKeep"
-if [ $OptionKeep -lt 1 ]
-then 
-echo "do not keep"
-fi
+#echo "Keep: $OptionKeep"
+#if [ $OptionKeep -lt 1 ]
+#then 
+#echo "do not keep"
+#fi
 echo "Test: $Test"
 #exit
 
