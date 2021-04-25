@@ -13,7 +13,9 @@ done
 OptionRedownload=0
 OptionKeep=0
 OptionDLVid=1
+OptionDLHtml=1
 OptionWGetArgs="-q --show-progress"
+OptionInputFile="channel.html"
 
 for (( i=0; (i+1)<${#paramArr[@]}; i++))
 do
@@ -22,11 +24,16 @@ do
       echo "downloadbitchute.sh { Options } [URL]"
       echo "Available Options:"
       echo "--redownload: Also include allready existing (by directory) videos for download"
+      echo "--input-file: enables to specify a pre-downloaded html file name. Skips download and uses passed name to extract the video URLs"
       echo "--keep: Keep Tmp Files and Skripts"
       echo "--novid: Skip Video Download"
       echo "--wgetArgs: NExt passed String defines Args for wget [default: \"-q --show-progress\"]"
       echo "-h/--help: This Help"
       exit
+    ;;
+    "--input-file")
+      OptionDLHtml=0
+      OptionInputFile="${paramArr[i+1]}"
     ;;
     "--redownload")
       OptionRedownload=1
@@ -59,7 +66,9 @@ ChannelID=$(echo "${paramArr[${#paramArr[@]}-1]}" | sed 's/https:\/\/www.bitchut
 
 #-> specify output file
 #-> use showall url
-wget $OptionWGetArgs -O channel.html "https://www.bitchute.com/channel/$ChannelID/?showall=1"
+if [ $OptionDLHtml -ge 1 ]; then
+wget $OptionWGetArgs -O $OptionInputFile "https://www.bitchute.com/channel/$ChannelID/?showall=1"
+fi
 
 if [ -e "videos.txt" ]
 then
@@ -69,7 +78,7 @@ fi
 
 #grep "<a href=\"/video/" test.html
 #Videos=$(grep "<p class=\"video-card-title\"><a href=\"/video/" channel.html | awk '{print $3}' | grep "href=\"/" | sed 's/href=\"\/video\///g' | sed 's/\/\"//g')
-Videos=$(grep '<a href="/video/' channel.html | awk '{print $2}' | sed '/class/ q' | grep -v "class=" | sed 's/href="\/video\///g' | sed 's/\///g' | sed 's/"//g')
+Videos=$(grep '<a href="/video/' $OptionInputFile |  awk 'NF==3 {print $2}' | sed '/class/ q' | grep -v "class=" | sed 's/href="\/video\///g' | sed 's/\///g' | sed 's/"//g')
 
 #echo "Vidoes: $Videos"
 #<p class="video-card-title"><a href="/video/
