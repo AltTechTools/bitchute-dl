@@ -37,7 +37,6 @@ do
     ;;
     "--redownload")
       OptionRedownload=1
-      #echo " OptionRedownload"
     ;;
     "--keep")
       OptionKeep=1
@@ -51,68 +50,34 @@ do
    "--novid")
      OptionDLVid=0
    ;;
-    *)
-      #echo "else"
-      #echo "${paramArr[i]}"
-    ;;
   esac
-  #echo "${paramArr[i]}"
-  #echo "${paramArr[${#paramArr[@]}-1]}"
 done
 
 ChannelID=$(echo "${paramArr[${#paramArr[@]}-1]}" | sed 's/https:\/\/www.bitchute.com\/channel\///g' | sed 's/?showall=1//g' | sed 's/\///g')
-#echo "$ChannelID"
-#exit
 
-#-> specify output file
-#-> use showall url
 if [ $OptionDLHtml -ge 1 ]; then
 wget $OptionWGetArgs -O $OptionInputFile "https://www.bitchute.com/channel/$ChannelID/?showall=1"
 fi
 
 if [ -e "videos.txt" ]
 then
-  #echo "rm vidoes"
   rm videos.txt
 fi
 
-#grep "<a href=\"/video/" test.html
-#Videos=$(grep "<p class=\"video-card-title\"><a href=\"/video/" channel.html | awk '{print $3}' | grep "href=\"/" | sed 's/href=\"\/video\///g' | sed 's/\/\"//g')
 Videos=$(grep '<a href="/video/' $OptionInputFile |  awk 'NF==3 {print $2}' | sed '/class/ q' | grep -v "class=" | sed 's/href="\/video\///g' | sed 's/\///g' | sed 's/"//g')
 
-#echo "Vidoes: $Videos"
-#<p class="video-card-title"><a href="/video/
-
-#sed -i 's/\" class=\"spa\">/\r\n/g' videos.txt
-#cp videos.txt videos2.txt
-#grep "<p class=\"video-card-title\"><a href=\"/video/" videos2.txt > videos.txt
-
-#exit
-#sed -i 's/ /\r\n/g' videos.txt
-#cp videos.txt videos2.txt
-#grep "href=\"/" videos2.txt > videos.txt
-#sed -i 's/href=\"\/video\///g' videos.txt
-#sed -i 's/\/\"//g' videos.txt
-
-#rm videos2.txt
-#while IFS= read -r line; do
 for line in $Videos
 do
-#echo "line: $line"
-if !(test -e "${line}"); then
-  echo " - dl: $line"
-  echo "${line}" >> videos.txt
-  #echo "not found ${line}"
-  #mkdir "${line}"
-else
-  echo "exists ${line}" 
-  if [ $OptionRedownload -ge 1 ]
-  then
-    #echo "OptionRedownload in action"
+  if !(test -e "${line}"); then
+    echo " - dl: $line"
     echo "${line}" >> videos.txt
+  else
+    echo "exists ${line}" 
+    if [ $OptionRedownload -ge 1 ]
+    then
+      echo "${line}" >> videos.txt
+    fi
   fi
-fi
 done
-#done < videos.txt
 
 
