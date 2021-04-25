@@ -1,78 +1,87 @@
 #!/bin/bash 
-#./downloadbitchute.sh https://www.bitchute.com/video/xJNBHF80zAI/
+
+paramArr=()
 
 for param in "$@" 
 do
-    Test="${param}";
+    paramArr+=("${param}");
 done
+
+OptionKeep=0
+OptionDLVid=1
+OptionWGetArgs="-q --show-progress"
+
+for (( i=0; (i+1)<${#paramArr[@]}; i++))
+do
+  case "${paramArr[i]}" in
+    "-h" | "--help")
+      echo "downloadbitchute.sh { Options } [URL]"
+      echo "Available Options:"
+      echo "--keep: Keep Tmp Files and Skripts"
+      echo "--novid: Skip Video Download"
+      echo "--wgetArgs: NExt passed String defines Args for wget [default: \"-q --show-progress\"]"
+      echo "-h/--help: This Help"
+      exit
+    ;;
+    "--keep")
+      OptionKeep=1
+      #echo "k param"
+      #echo "${paramArr[i+1]}"
+   ;;
+   "--wgetArgs")
+     OptionWGetArgs="${paramArr[i+1]}"
+   ;;
+
+   "--novid")
+     OptionDLVid=0
+   ;;
+  esac
+done
+
+Test=${paramArr[${#paramArr[@]}-1]}
 
 if [ "$Test" = '' ]
 then
-echo "No URL specified"
-exit
-else
-echo "${Test}"  > tmp.txt
+  echo "No URL specified"
+  exit
 fi
-#gedit tmp.txt
 
-#echo "https://www.bitchute.com/video/xJNBHF80zAI/" > tmp.txt
-sed -i 's/https:\/\/www.bitchute.com\/video//g' tmp.txt
-sed -i 's/?list=subscriptions//g' tmp.txt
-sed -i 's/\///g' tmp.txt
 URL="https://www.bitchute.com/video/"
-VideoID=$(cat tmp.txt)
+VideoID=$(echo "${Test}" | sed 's/https:\/\/www.bitchute.com\/video//g' | sed 's/?list=subscriptions//g' | sed 's/\///g')
+
 URL="${URL}${VideoID}/"
-#exit
-rm tmp.txt
 
-#echo $URL
-
-#wget https://www.bitchute.com/video/xJNBHF80zAI/
 mkdir $VideoID
 cp dl_*.sh "${VideoID}/"
 cp downloadbitchute-channelinfo.sh "${VideoID}/"
 cd $VideoID
 echo $VideoID > videos.txt
-tmp=$(wget $URL)
+tmp=$(wget $OptionWGetArgs $URL)
 
-
-#only referedVideoThumb=$(grep "<img class=\"img-responsive lazyload\"" index.html)
-#find video thumb:
-#1. extract chanel url
-#2. download html
-#3. grep xJNBHF80zAI_ ("${VideoID}_")
-# 4. download contained link
-
-
-#echo $VideoThumb > thumb.txt
-
-#sed -i 's/ /\r\n/g' thumb.txt
-#sed -i 's/<br>/\r\n/g' Description.txt
-#sed -i 's/from/to/g' Description.txt
-
-#ThumbURLS=$(grep "data-src=" thumb.txt)
-#echo $ThumbURLS > thumb2.txt
-#exit
 ./dl_DownloadText.sh
 ./dl_Channel.sh
 ./dl_Title.sh
 ./dl_Description.sh
-#exit
 ./downloadbitchute-channelinfo.sh
-#DownloadText=$(cat tmp.txt)
+
 DownloadText=$(cat VidURL.txt)
 Channel=$(cat Channel.txt)
 Title=$(cat Title.txt)
 Description=$(cat Description.txt)
-#rm tmp.txt
-#exit
-rm videos.txt
-rm VidURL.txt
-rm index.html
-rm downloadbitchute-channelinfo.sh
-rm dl_*.sh
-#echo $DownloadText
 
-tmp=$(wget $DownloadText)
-clear
+#download actual video
+if [ $OptionDLVid -ge 1 ]
+then
+  echo "Downloading Video File"
+  tmp=$(wget $OptionWGetArgs $DownloadText)
+fi
+
+if [ $OptionKeep -lt 1 ]
+then 
+  rm videos.txt
+  rm VidURL.txt
+  rm index.html
+  rm downloadbitchute-channelinfo.sh
+  rm dl_*.sh
+fi
 echo "Done"
