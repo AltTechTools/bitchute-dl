@@ -56,6 +56,7 @@ cp dl_*.sh "${VideoID}/"
 cp downloadbitchute-channelinfo.sh "${VideoID}/"
 cd $VideoID
 echo $VideoID > videos.txt
+#echo $URL
 tmp=$(wget $OptionWGetArgs $URL)
 
 ./dl_DownloadText.sh
