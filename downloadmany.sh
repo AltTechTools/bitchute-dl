@@ -3,8 +3,9 @@
 
 for param in "$@" 
 do
+    echo "${param}"
     ./downloadbitchute.sh "${param}";
 done
 
-clear
+#clear
 echo "Downloaded"
