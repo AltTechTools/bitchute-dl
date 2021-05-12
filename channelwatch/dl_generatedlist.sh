@@ -7,6 +7,8 @@ cd ..
 OptionDownloadList=$1 #"channelmissing.txt"
 #echo "test gen dl ($OptionDownloadList) -> downloadmany(deactivated)"
 #cat $OptionDownloadList
-./downloadmany.sh $(cat $OptionDownloadList)
+
+[ -f $OptionDownloadList ] && ./downloadmany.sh $(cat $OptionDownloadList)
+
 echo "downloaded $OptionDownloadList"
 #rm $OptionDownloadList

@@ -4,6 +4,8 @@
 #./listleftchannelvideos.sh --no-prompt "$Channelname"
 #./dl_generatedlist.sh
 
+#echo "$@"
+
 for param in "$@" 
 do
     #echo "dl_autolist.sh test: ${param}"

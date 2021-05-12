@@ -9,7 +9,8 @@ done
 
 OptionKeep=0
 OptionDLVid=1
-OptionWGetArgs="-q --show-progress"
+#OptionWGetArgs="-q --show-progress"
+OptionWGetArgs="-q"
 
 for (( i=0; (i+1)<${#paramArr[@]}; i++))
 do
@@ -51,14 +52,19 @@ VideoID=$(echo "${Test}" | sed 's/https:\/\/www.bitchute.com\/video//g' | sed 's
 
 URL="${URL}${VideoID}/"
 
-mkdir $VideoID
-cp dl_*.sh "${VideoID}/"
-cp downloadbitchute-channelinfo.sh "${VideoID}/"
-cd $VideoID
-echo $VideoID > videos.txt
+echo "${VideoID}"
+#exit
+mkdir -- "${VideoID}/" || { echo "mkdir failed! exiting & skipping this Download ${VideoID}"; exit; }
+[ $(ls | grep -c "\.sh") -lt 14 ] && cp skrptbak/* .
+cp -- dl_*.sh "${VideoID}/"
+cp -- downloadbitchute-channelinfo.sh "${VideoID}/"
+cd -- "${VideoID}" || { echo "cd failed! exiting & skipping this Download ${VideoID}"; exit; }
+echo "${VideoID}" > videos.txt
 #echo $URL
-tmp=$(wget $OptionWGetArgs $URL)
-
+#echo "$OptionWGetArgs ; $URL"
+tmp=$(wget "$OptionWGetArgs" "$URL")
+#echo $tmp
+#exit
 ./dl_DownloadText.sh
 ./dl_Channel.sh
 ./dl_Title.sh
@@ -74,15 +80,15 @@ Description=$(cat Description.txt)
 if [ $OptionDLVid -ge 1 ]
 then
   echo "Downloading Video File"
-  tmp=$(wget $OptionWGetArgs $DownloadText)
+  tmp=$(wget "$OptionWGetArgs" "$DownloadText")
 fi
 
 if [ $OptionKeep -lt 1 ]
 then 
-  rm videos.txt
-  rm VidURL.txt
-  rm index.html
-  rm downloadbitchute-channelinfo.sh
-  rm dl_*.sh
+  rm -f videos.txt
+  rm -f VidURL.txt
+  rm -f index.html
+  rm -f downloadbitchute-channelinfo.sh
+  rm -f dl_*.sh
 fi
 echo "Done"
