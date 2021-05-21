@@ -8,3 +8,6 @@ do
   cd ..
   [ $CountVid -lt 1 ] && echo "$line" && echo "$line" >> noVid.list  # && echo "Test $CountVid"
 done <<< $(ls -F | grep "/" | grep -v "channelwatch")
+
+echo ""
+echo "--> Stored in noVid.list"
