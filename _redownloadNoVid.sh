@@ -1,4 +1,8 @@
 #!/bin/sh
+#       Parameters:
+# 1     Keep [Optiona] "keep" to keep the list
 
- ./downloadmany.sh $(cat noVid.list) 
+./_deleteNoVid.sh "keep"
+./downloadmany.sh $(cat noVid.list) 
 
+[ "$1" = "keep" ] || rm -f noVid.list

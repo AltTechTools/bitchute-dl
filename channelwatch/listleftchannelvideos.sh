@@ -2,7 +2,6 @@
 
 #cd ..
 
-#for now gets the recommended videos on the right side, instead of the main list
 paramArr=()
 
 for param in "$@" 
@@ -26,7 +25,7 @@ for (( i=0; (i+1)<${#paramArr[@]}; i++))
 do
   case "${paramArr[i]}" in
     "-h" | "--help")
-      echo "downloadbitchute.sh { Options } [URL]"
+      echo "listleftchannelvideos.sh { Options } [URL]"
       echo "Available Options:"
       echo "--no-prompt: Don't Prompt, for Auto Behaviour, skip it. Usefull for skripts, which shouldn't require user input"
       echo "--redownload: Also include allready existing (by directory) videos for download"
@@ -34,7 +33,7 @@ do
       echo "--output-file: enables to specify the filename of the created video Id list."
       echo "--keep: Keep Tmp Files and Skripts"
       echo "--novid: Skip Video Download"
-      echo "--wgetArgs: NExt passed String defines Args for wget [default: \"-q --show-progress\"]"
+      echo "--wgetArgs: Next passed String defines Args for wget [default: \"-q --show-progress\"]"
       echo "-h/--help: This Help"
       exit
     ;;

@@ -1,12 +1,5 @@
 # bitchute-dl
 
-Use /channelwatch/listleftchannelvideos.sh script:
-```
-./listleftchannelvideos.sh
-cp videos.txt ..
-./downloadmany.sh $(cat videos.txt)
-```
-
 Todo:
 - switch to parameters
 - e.v switch to regex

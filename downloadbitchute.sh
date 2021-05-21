@@ -54,11 +54,11 @@ URL="${URL}${VideoID}/"
 
 echo "${VideoID}"
 #exit
-mkdir -- "${VideoID}/" || { echo "mkdir failed! exiting & skipping this Download ${VideoID}"; exit; }
+mkdir -- "${VideoID}/" || { echo "mkdir failed! exiting & skipping this Download ${VideoID}"; exit -1; }
 [ $(ls | grep -c "\.sh") -lt 14 ] && cp skrptbak/* .
 cp -- dl_*.sh "${VideoID}/"
 cp -- downloadbitchute-channelinfo.sh "${VideoID}/"
-cd -- "${VideoID}" || { echo "cd failed! exiting & skipping this Download ${VideoID}"; exit; }
+cd -- "${VideoID}" || { echo "cd failed! exiting & skipping this Download ${VideoID}"; exit -1; }
 echo "${VideoID}" > videos.txt
 #echo $URL
 #echo "$OptionWGetArgs ; $URL"
@@ -71,6 +71,7 @@ tmp=$(wget "$OptionWGetArgs" "$URL")
 ./dl_Description.sh
 ./downloadbitchute-channelinfo.sh
 
+echo $(date +%Y%m%d) > date.txt
 DownloadText=$(cat VidURL.txt)
 Channel=$(cat Channel.txt)
 Title=$(cat Title.txt)
